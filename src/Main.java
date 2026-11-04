@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Main {
     static ArrayList<Book> books = new ArrayList<>();
@@ -16,6 +21,8 @@ public class Main {
             System.out.println("2. Display all books");
             System.out.println("3. Search book");
             System.out.println("4. Borrow book");
+            System.out.println("5. Save book to file");
+            System.out.println("6. Load books from file");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -38,6 +45,14 @@ public class Main {
 
                     case 4:
                         borrowBook();
+                        break;
+
+                    case 5:
+                        saveBooksToFile();
+                        break;
+
+                    case 6:
+                        loadBooksFromFile();
                         break;
 
                     case 0:
@@ -127,4 +142,68 @@ public class Main {
             System.out.println("Book borrowed!");
         }
     }
+
+    public static void saveBooksToFile() {
+
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get("books.txt"));
+
+            for (Book book : books) {
+
+                writer.write(book.getTitle() + ";" +
+                        book.getAuthor() + ";" +
+                        book.getPublicationYear() + ";" +
+                        book.isBorrowed());
+
+                writer.newLine();
+            }
+
+            writer.close();
+
+            System.out.println("Books saved successfully!");
+
+        } catch (IOException e) {
+            System.out.println("Error while saving books!");
+        }
+    }
+
+    public static void loadBooksFromFile() {
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get("books.txt"));
+
+            books.clear();
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] data = line.split(";");
+
+                String title = data[0];
+                String author = data[1];
+                int year = Integer.parseInt(data[2]);
+                boolean borrowed = Boolean.parseBoolean(data[3]);
+
+                Book book = new Book(title, author, year);
+
+                if (borrowed) {
+                    book.borrowBook();
+                }
+
+                books.add(book);
+            }
+
+            reader.close();
+
+            System.out.println("Books loaded successfully!");
+
+        } catch (IOException e) {
+            System.out.println("File not found or error while reading!");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid data in file!");
+        }
+    }
+
 }
