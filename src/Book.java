@@ -1,7 +1,7 @@
 public class Book {
     private String title;
     private String author;
-    private Integer publicationYear;
+    private int publicationYear;
     private boolean isBorrowed;
 
     public Book(String title, String author, int publicationYear) {
@@ -10,14 +10,36 @@ public class Book {
         this.publicationYear = publicationYear;
         this.isBorrowed = false;
     }
-    public void displayInfo(){
-        System.out.println(title);
-        System.out.println(author);
-        System.out.println(publicationYear);
-        System.out.println(isBorrowed);
+
+    public void displayInfo() {
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+        System.out.println("Publication year: " + publicationYear);
+
+        if (isBorrowed) {
+            System.out.println("Status: Borrowed");
+        } else {
+            System.out.println("Status: Available");
+        }
     }
 
-    public void borrowBook(){
+    public void borrowBook() {
+        isBorrowed = true;
+    }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public int getPublicationYear() {
+        return publicationYear;
+    }
+
+    public boolean isBorrowed() {
+        return isBorrowed;
     }
 }
