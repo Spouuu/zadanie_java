@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 public class Main {
     static ArrayList<Book> books = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
+    static ArrayList<Reader> readers = new ArrayList<>();
+    static int nextReaderId = 1;
 
     public static void main(String[] args) {
 
@@ -23,6 +25,9 @@ public class Main {
             System.out.println("4. Borrow book");
             System.out.println("5. Save book to file");
             System.out.println("6. Load books from file");
+            System.out.println("7. Add reader");
+            System.out.println("8. Display readers");
+            System.out.println("9. Find reader by ID");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -53,6 +58,18 @@ public class Main {
 
                     case 6:
                         loadBooksFromFile();
+                        break;
+
+                    case 7:
+                        addReader();
+                        break;
+
+                    case 8:
+                        displayReaders();
+                        break;
+
+                    case 9:
+                        findReaderById();
                         break;
 
                     case 0:
@@ -204,6 +221,45 @@ public class Main {
         } catch (NumberFormatException e) {
             System.out.println("Invalid data in file!");
         }
+    }
+    public static void addReader() {
+        System.out.print("Enter first name: ");
+        String firstName = scanner.nextLine();
+
+        System.out.print("Enter last name: ");
+        String lastName = scanner.nextLine();
+
+        Reader reader = new Reader(nextReaderId, firstName, lastName);
+
+        readers.add(reader);
+        nextReaderId++;
+
+        System.out.println("Reader added!");
+    }
+    public static void displayReaders() {
+        if (readers.isEmpty()) {
+            System.out.println("No readers!");
+        } else {
+            for (Reader reader : readers) {
+                reader.displayInfo();
+                System.out.println();
+            }
+        }
+    }
+    public static Reader findReaderById() {
+        System.out.print("Enter reader ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        for (Reader reader : readers) {
+            if (reader.getId() == id) {
+                reader.displayInfo();
+                return reader;
+            }
+        }
+
+        System.out.println("Reader not found!");
+        return null;
     }
 
 }
