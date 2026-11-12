@@ -10,6 +10,7 @@ public class Main {
     static ArrayList<Book> books = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
     static ArrayList<Reader> readers = new ArrayList<>();
+    static ArrayList<Employee> employees = new ArrayList<>();
     static int nextReaderId = 1;
 
     public static void main(String[] args) {
@@ -28,6 +29,8 @@ public class Main {
             System.out.println("7. Add reader");
             System.out.println("8. Display readers");
             System.out.println("9. Find reader by ID");
+            System.out.println("10. Add employee");
+            System.out.println("11. Make an employee a bankrupt");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -70,6 +73,14 @@ public class Main {
 
                     case 9:
                         findReaderById();
+                        break;
+
+                    case 10:
+                        addEmployee();
+                        break;
+
+                    case 11:
+                        bankruptEmployee();
                         break;
 
                     case 0:
@@ -246,7 +257,7 @@ public class Main {
             }
         }
     }
-    public static Reader findReaderById() {
+    public static void findReaderById() {
         System.out.print("Enter reader ID: ");
         int id = scanner.nextInt();
         scanner.nextLine();
@@ -254,12 +265,45 @@ public class Main {
         for (Reader reader : readers) {
             if (reader.getId() == id) {
                 reader.displayInfo();
-                return reader;
+                return;
             }
         }
 
         System.out.println("Reader not found!");
-        return null;
+    }
+
+    public static void addEmployee() {
+        System.out.print("Enter first name: ");
+        String firstName = scanner.nextLine();
+
+        System.out.print("Enter last name: ");
+        String lastName = scanner.nextLine();
+
+        System.out.print("Enter paycheck: ");
+        int paycheck = scanner.nextInt();
+        scanner.nextLine();
+
+        Employee employee = new Employee(paycheck, firstName, lastName);
+
+        employees.add(employee);
+
+        System.out.println("Employee added!");
+    }
+
+    public static void bankruptEmployee() {
+        System.out.print("Enter employee number: ");
+        int number = scanner.nextInt();
+        scanner.nextLine();
+
+        if (number > 0 && number <= employees.size()) {
+            Employee employee = employees.get(number - 1);
+
+            employee.setPaycheck(0);
+
+            System.out.println("Employee paycheck set to 0!");
+        } else {
+            System.out.println("Employee not found!");
+        }
     }
 
 }
